@@ -1,2 +1,11 @@
 # Compiled
 *.elc
+
+# Emacs backup file
+*~
+\#*\#
+
+
+# Other
+ac-comphist.dat
+.session
