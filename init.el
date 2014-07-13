@@ -2,12 +2,6 @@
 ;; 各種設定
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; デフォルトの文字コードと改行コード
-(set-default-coding-systems 'utf-8-dos)
-
-;; パスとファイル名はShift_JIS
-(setq default-file-name-coding-system 'japanese-cp932-dos)
-
 ;; ツールバーを表示しない
 (tool-bar-mode 0)
 
@@ -831,3 +825,11 @@ check for the whole contents of FILE, otherwise check for the first
 
 (add-to-list 'helm-source-buffers-list
              '(pattern-transformer helm-buffers-list-pattern-transformer))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; magit
+;; -> https://github.com/magit/magit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(global-set-key (kbd "C-x g") 'magit-status)
