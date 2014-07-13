@@ -410,7 +410,6 @@ check for the whole contents of FILE, otherwise check for the first
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook (lambda ()
                           (local-set-key (kbd "M-.") 'godef-jump)))
-(add-hook 'before-save-hook 'gofmt-before-save)
 
 (require 'go-eldoc)
 (add-hook 'go-mode-hook 'go-eldoc-setup)
