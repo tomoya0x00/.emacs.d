@@ -771,10 +771,13 @@ check for the whole contents of FILE, otherwise check for the first
 (global-set-key [?\C-;] 	'helm-mini)
 (global-set-key "\M-y" 		'helm-show-kill-ring)
 (global-set-key "\M-o" 		'helm-occur)
-(global-set-key "\M-x"     	'helm-M-x)
+;;(global-set-key "\M-x"     	'helm-M-x)
 (global-set-key "\C-x\C-f" 'helm-find-files)
 (global-set-key "\C-xr" 	'helm-recentf)
 (global-set-key "\C-c\C-g"  'helm-imenu)
+
+;; isearchからhelm-occurを起動
+(define-key isearch-mode-map (kbd "C-o") 'helm-occur-from-isearch)
 
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
