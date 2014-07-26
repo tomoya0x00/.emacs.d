@@ -413,6 +413,7 @@ check for the whole contents of FILE, otherwise check for the first
 
 (require 'go-direx)
 (define-key go-mode-map (kbd "C-c C-j") 'go-direx-switch-to-buffer)
+(define-key go-mode-map (kbd "C-m") 'newline-and-indent)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake.el
@@ -837,3 +838,54 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x g") 'magit-status)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; c-mode用のいろいろな設定
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; キーバインドの追加
+;; ------------------
+;; C-m        改行＋インデント
+;; C-c c      コンパイルコマンドの起動
+;; C-h        空白の一括削除
+(add-hook 'c-mode-common-hook
+          '(lambda ()
+             (c-set-style "user")
+             (setq indent-tabs-mode nil)
+             (setq tab-width 4)
+             (setq c-basic-offset tab-width)
+             (c-set-offset 'substatement-open 0)
+             (define-key c-mode-base-map "\C-m" 'newline-and-indent)
+             (define-key c-mode-base-map "\C-c\C-c" 'compile)
+             (define-key c-mode-base-map "\C-ce" 'next-error)
+             (define-key c-mode-base-map [?\M-\;]  'my-comment-dwim)
+             (setq current-comment-prefix "/*")
+             (define-key c-mode-base-map "\C-cf" 'ff-find-other-file)
+))
+
+;; /* */スタイルのコメントを挿入する
+(defun my-comment-dwim(arg)
+  (interactive "*P")
+  (setq comment-start "/* "
+        comment-end   " */")
+  (comment-dwim arg)
+  ;; 元に戻しておく
+  (setq comment-start "// "
+        comment-end   "")
+  )
+
+;; コンパイルコマンドの設定
+(setq compile-command "make" )   ; GCC の make
+(setq compilation-window-height 6)
+;; 出力をスクロールして追いかける
+(setq compilation-scroll-output t)
+
+;;asm-mode
+(add-hook 'asm-mode-hook
+      (function
+       (lambda ()
+         (define-key asm-mode-map [return] 'newline)
+        ))
+)
+
+(put 'upcase-region 'disabled nil)
