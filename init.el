@@ -206,6 +206,11 @@ check for the whole contents of FILE, otherwise check for the first
 (global-unset-key "\C-x\C-b")
 (global-set-key "\C-x\C-b" 'ibuffer)
 
+;; emacsclient
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ロードパスの追加
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
