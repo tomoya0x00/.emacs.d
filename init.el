@@ -849,7 +849,6 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x g") 'magit-status)
-(setq magit-git-executable "C:/Program Files (x86)/Git/cmd/git.exe")
 (add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
