@@ -8,6 +8,12 @@
 ;; フォント指定
 (set-face-attribute 'default nil :family "MeiryoKe_Console" :height 140)
 
+;; Coding system.
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
 ;;; 最終更新日の自動挿入
 ;;;   ファイルの先頭から 8 行以内に Time-stamp: <> または
 ;;;   Time-stamp: " " と書いてあれば、セーブ時に自動的に日付が挿入されます
@@ -843,6 +849,8 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x g") 'magit-status)
+(setq magit-git-executable "C:/Program Files (x86)/Git/cmd/git.exe")
+(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c-mode用のいろいろな設定
