@@ -715,6 +715,7 @@ check for the whole contents of FILE, otherwise check for the first
 ;; -> http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=flush-lines
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(require 'moccur-edit)
 (setq moccur-split-word t)
 (global-set-key "\C-c\C-f" 'moccur-grep-find)
 (global-set-key "\C-c\C-m" 'moccur)
