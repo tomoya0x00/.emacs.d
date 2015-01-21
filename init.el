@@ -412,7 +412,7 @@ check for the whole contents of FILE, otherwise check for the first
 ;; -> http://unknownplace.org/archives/golang-editing-with-emacs.html
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-hook 'before-save-hook 'gofmt-before-save)
+;;(add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'go-mode-hook (lambda ()
                           (local-set-key (kbd "M-.") 'godef-jump)))
 
