@@ -559,6 +559,13 @@ check for the whole contents of FILE, otherwise check for the first
                (action-lock-set-rules action-lock-default-rules)))))
 (add-hook 'action-lock-mode-on-hook 'add-my-action-lock-rule)
 
+;; howm-color タイトルが見づらいので、文字色変更
+(set-face-foreground 'howm-mode-title-face "DeepSkyBlue")
+
+;; hown一覧時にウィンドウ分割を壊さない設定
+(setq riffle-keep-window t)
+(setq riffle-window-initializer nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; fuzzy-format.el
 ;; インデントがタブかスペースか区別して良い感じに扱う
