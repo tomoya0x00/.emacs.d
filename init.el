@@ -63,6 +63,10 @@
 ;; ブラウザで開く
 (global-set-key "\C-cb" 'browse-url-at-point)
 
+;; compile
+(global-set-key "\C-c\C-c" 'compile)
+(global-set-key "\C-ce" 'next-error)
+
 ;;モードラインや日付を表示
 (setq display-time-string-forms
   '((substring year -2) "/" month "/" day " " dayname))
@@ -412,10 +416,6 @@ check for the whole contents of FILE, otherwise check for the first
 ;; -> http://unknownplace.org/archives/golang-editing-with-emacs.html
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;(add-hook 'before-save-hook 'gofmt-before-save)
-(add-hook 'go-mode-hook (lambda ()
-                          (local-set-key (kbd "M-.") 'godef-jump)))
-
 (require 'go-eldoc)
 (add-hook 'go-mode-hook 'go-eldoc-setup)
 (set-face-attribute 'eldoc-highlight-function-argument nil
@@ -423,8 +423,24 @@ check for the whole contents of FILE, otherwise check for the first
                     :weight 'bold)
 
 (require 'go-direx)
-(define-key go-mode-map (kbd "C-c C-j") 'go-direx-switch-to-buffer)
-(define-key go-mode-map (kbd "C-m") 'newline-and-indent)
+
+(add-hook 'go-mode-hook
+          '(lambda()
+            (setq c-basic-offset 4)
+            (setq indent-tabs-mode t)
+            (setq gofmt-command "goimports")
+            (add-hook 'before-save-hook 'gofmt-before-save)
+            (local-set-key (kbd "M-.") 'godef-jump)
+            (local-set-key (kbd "M-,") 'pop-tag-mark)
+            (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
+            (local-set-key (kbd "C-c i") 'go-goto-imports)
+            (local-set-key (kbd "C-m") 'newline-and-indent)
+            (local-set-key (kbd "C-c C-j") 'go-direx-switch-to-buffer)
+            (local-set-key (kbd "C-c d") 'godoc)
+
+            (if (not (string-match "go" compile-command))
+                (set (make-local-variable 'compile-command)
+                     "go generate && go build -v && go test -v && go vet"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake.el
@@ -866,7 +882,6 @@ check for the whole contents of FILE, otherwise check for the first
 ;; キーバインドの追加
 ;; ------------------
 ;; C-m        改行＋インデント
-;; C-c c      コンパイルコマンドの起動
 ;; C-h        空白の一括削除
 (add-hook 'c-mode-common-hook
           '(lambda ()
@@ -876,8 +891,6 @@ check for the whole contents of FILE, otherwise check for the first
              (setq c-basic-offset tab-width)
              (c-set-offset 'substatement-open 0)
              (define-key c-mode-base-map "\C-m" 'newline-and-indent)
-             (define-key c-mode-base-map "\C-c\C-c" 'compile)
-             (define-key c-mode-base-map "\C-ce" 'next-error)
              (define-key c-mode-base-map [?\M-\;]  'my-comment-dwim)
              (setq current-comment-prefix "/*")
              (define-key c-mode-base-map "\C-cf" 'ff-find-other-file)
