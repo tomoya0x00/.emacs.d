@@ -65,6 +65,7 @@
 
 ;; compile
 (global-set-key "\C-c\C-c" 'compile)
+(global-set-key "\C-c\C-k" 'kill-compilation)
 (global-set-key "\C-ce" 'next-error)
 
 ;;モードラインや日付を表示
@@ -437,10 +438,14 @@ check for the whole contents of FILE, otherwise check for the first
             (local-set-key (kbd "C-m") 'newline-and-indent)
             (local-set-key (kbd "C-c C-j") 'go-direx-switch-to-buffer)
             (local-set-key (kbd "C-c d") 'godoc)
+            (local-set-key (kbd "C-x f") 'go-test-current-file)
+            (local-set-key (kbd "C-x t") 'go-test-current-test)
+            (local-set-key (kbd "C-x p") 'go-test-current-project)
+            (local-set-key (kbd "C-x b") 'go-test-current-benchmark)
+            (local-set-key (kbd "C-x x") 'go-run)
 
-            (if (not (string-match "go" compile-command))
-                (set (make-local-variable 'compile-command)
-                     "go generate && go build -v && go test -v && go vet"))))
+            (set (make-local-variable 'compile-command)
+                 "go generate && go build -v && go test -v && go vet")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake.el
