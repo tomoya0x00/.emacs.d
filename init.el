@@ -348,25 +348,25 @@ check for the whole contents of FILE, otherwise check for the first
 ;; ミニバッファ補完機構の補強
 ;; -> http://homepage1.nifty.com/bmonkey/emacs/
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(autoload 'mcomplete-mode "mcomplete"
-  "Toggle minibuffer completion with prefix and substring matching."
-  t nil)
-(autoload 'turn-on-mcomplete-mode "mcomplete"
-  "Turn on minibuffer completion with prefix and substring matching."
-  t nil)
-(autoload 'turn-off-mcomplete-mode "mcomplete"
-  "Turn off minibuffer completion with prefix and substring matching."
-  t nil)
-
-(turn-on-mcomplete-mode)
-
-;; mcomplete では標準でヒストリを使わない
-(defcustom mcomplete-default-method-set
-  '(mcomplete-prefix-method mcomplete-substr-method)
-  "List of completion methods.  The first method is applied first."
-  :type  '(repeat function)
-  :group 'mcomplete)
-
+;;(autoload 'mcomplete-mode "mcomplete"
+;;  "Toggle minibuffer completion with prefix and substring matching."
+;;  t nil)
+;;(autoload 'turn-on-mcomplete-mode "mcomplete"
+;;  "Turn on minibuffer completion with prefix and substring matching."
+;;  t nil)
+;;(autoload 'turn-off-mcomplete-mode "mcomplete"
+;;  "Turn off minibuffer completion with prefix and substring matching."
+;;  t nil)
+;;
+;;(turn-on-mcomplete-mode)
+;;
+;;;; mcomplete では標準でヒストリを使わない
+;;(defcustom mcomplete-default-method-set
+;;  '(mcomplete-prefix-method mcomplete-substr-method)
+;;  "List of completion methods.  The first method is applied first."
+;;  :type  '(repeat function)
+;;  :group 'mcomplete)
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Window の分割情報を保存　タブも表示
 ;; -> http://www.bookshelf.jp/soft/meadow_30.html#SEC393
