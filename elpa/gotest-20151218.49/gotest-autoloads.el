@@ -51,7 +51,7 @@ Launch go run on current buffer file.
 
 ;;;### (autoloads nil nil ("../../../../../../emacs/.emacs.d/elpa/gotest-20151218.49/gotest-autoloads.el"
 ;;;;;;  "../../../../../../emacs/.emacs.d/elpa/gotest-20151218.49/gotest.el")
-;;;;;;  (22134 59568 183205 800000))
+;;;;;;  (22135 1034 928388 400000))
 
 ;;;***
 
