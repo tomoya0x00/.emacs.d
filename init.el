@@ -441,7 +441,6 @@ check for the whole contents of FILE, otherwise check for the first
             (local-set-key (kbd "C-x f") 'go-test-current-file)
             (local-set-key (kbd "C-x t") 'go-test-current-test)
             (local-set-key (kbd "C-x p") 'go-test-current-project)
-            (local-set-key (kbd "C-x b") 'go-test-current-benchmark)
             (local-set-key (kbd "C-x x") 'go-run)
 
             (set (make-local-variable 'compile-command)
