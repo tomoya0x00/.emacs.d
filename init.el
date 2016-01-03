@@ -73,6 +73,9 @@
   '((substring year -2) "/" month "/" day " " dayname))
 (display-time)
 
+;;関連する括弧を強調表示
+(show-paren-mode 1)
+
 ;; モード名を短くする
 ;; Texinfo も長い
 (add-hook 'texinfo-mode-hook
@@ -444,7 +447,7 @@ check for the whole contents of FILE, otherwise check for the first
             (local-set-key (kbd "C-x x") 'go-run)
 
             (set (make-local-variable 'compile-command)
-                 "go generate && go build -v && go test -v && go vet")))
+                 "go generate && go build -v && go vet")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake.el
