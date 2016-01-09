@@ -209,11 +209,11 @@ check for the whole contents of FILE, otherwise check for the first
 ;; (setq iswitchb-buffer-ignore '("^ " "^TAGS" "\\*GTAGS SELECT" "\\*Ibuffer\\*"))
 
 ;; 起動時のフレームサイズをディスプレイ解像度に応じて縦いっぱいに
-(when window-system
- (set-frame-size
-  (selected-frame)
-  83 ;横サイズ
-  (- (/ (- (x-display-pixel-height) 85) (frame-char-height)) 1)))
+;; (when window-system
+;;  (set-frame-size
+;;   (selected-frame)
+;;   83 ;横サイズ
+;;   (- (/ (- (x-display-pixel-height) 85) (frame-char-height)) 1)))
 
 ;; ibuffer
 (setq ibuffer-default-sorting-mode 'recency)
