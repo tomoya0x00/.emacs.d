@@ -273,6 +273,17 @@ check for the whole contents of FILE, otherwise check for the first
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; guide-key
+;; ->https://github.com/kai2nenobu/guide-key
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c"))
+(setq guide-key/highlight-command-regexp "rectangle")
+(setq guide-key/idle-delay 0.2)
+(guide-key-mode 1)  ; guide-key-mode を有効にする
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://namazu.org/~satoru/diary/?200203c&to=200203272#200203272
 ;; 編集中のファイルを開き直す
 ;; - yes/no の確認が不要;;   - revert-buffer は yes/no の確認がうるさい
@@ -880,7 +891,7 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x g") 'magit-status)
-(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
+(setq magit-git-executable "C:/Program Files/Git/cmd/git.exe")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c-mode用のいろいろな設定
