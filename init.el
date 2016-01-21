@@ -49,8 +49,7 @@
 ;; HOME と END キーでバッファーの先頭/最後へ移動
 (global-set-key [home] 'beginning-of-buffer)
 (global-set-key [end] 'end-of-buffer)
-;; C-c g で行番号を指定して移動
-(global-set-key  "\C-cg" 'goto-line)
+
 ;; C-c ; で指定範囲をコメントアウト
 (global-set-key  "\C-c;" 'comment-region)
 ;; C-SPCを無効
@@ -67,6 +66,12 @@
 (global-set-key "\C-c\C-c" 'compile)
 (global-set-key "\C-c\C-k" 'kill-compilation)
 (global-set-key "\C-ce" 'next-error)
+
+;; 折り返しトグルコマンド
+(global-set-key (kbd "C-c l") 'toggle-truncate-lines)
+
+;; Window移動の簡略化
+(global-set-key (kbd "C-t") 'other-window)
 
 ;;モードラインや日付を表示
 (setq display-time-string-forms
@@ -278,7 +283,7 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c"))
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c" "M-g"))
 (setq guide-key/highlight-command-regexp "rectangle")
 (setq guide-key/idle-delay 0.2)
 (guide-key-mode 1)  ; guide-key-mode を有効にする
@@ -1095,3 +1100,4 @@ type1 はセパレータを消去するもの。")
             (and (boundp 'minibuffer-local-must-match-map)
                  minibuffer-local-must-match-map))))
 
+(put 'downcase-region 'disabled nil)
