@@ -991,6 +991,20 @@ check for the whole contents of FILE, otherwise check for the first
          ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; http://d.hatena.ne.jp/serian/20121115/p1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(eval-after-load "gnutls"
+  '(setq gnutls-trustfiles '("c:/cygwin64/usr/ssl/certs/ca-bundle.trust.crt"
+                             "c:/cygwin64/usr/ssl/certs/ca-bundle.crt")))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; egg
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'egg)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://ko.meadowy.net/~shirai/diary/20030819.html#p01
 ;; ミニバッファで一文字ずつ消すのではなく，
 ;; gnus-agent-batch を gnus-agent のように一区切り分を消すことができる
