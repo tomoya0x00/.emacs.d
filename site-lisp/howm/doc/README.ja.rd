@@ -923,6 +923,24 @@ Emacs で断片的なメモをどんどんとるための環境です.
 
 thx > patch・改良案・指摘をくださった皆様
 
+* テスト版
+  * [2016-01-01]
+    * バイトコンパイル時の警告を回避
+      * cl をやめて cl-lib を使う
+      * howm-ime-fix (howm-1.1.1 以前の canna, egg, yc, anthy 個別対策) を廃止
+      * その他こまごま
+
+* リリース版 howm-1.4.3 [2015-12-31]
+  * emacs 25.1.50.1 (2015-12-27 時点の git 先端 = de88375) で起動を確認
+  * howm-1.4.3rc1 と同じ内容です
+  * fix
+    * git 先端 emacs でのエラー (void-function ed)
+    * C-c , A (howm-list-around) で howm-list-title の設定が効いていなかった
+      ((<thx|URL:http://peace.2ch.net/test/read.cgi/unix/1397477663/39>))
+    * ((<howm-recentf|URL:http://howm.osdn.jp/cgi-bin/hiki/hiki.cgi?Recentf>))などで無駄にリモートファイルのパスワードを聞いてこないように.
+      thx > 鯉江英隆さん (hide at koie.org)
+    * ドキュメントのファイルモードの訂正
+
 * リリース版 howm-1.4.2 [2013-12-31]
   * Note
     * emacs 24.3 に対応. 2013-12-25 時点の trunk (24.3.50.1) でも起動を確認.

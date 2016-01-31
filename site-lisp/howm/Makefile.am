@@ -22,8 +22,7 @@ howm_LISP = \
 	riffle.el \
 	gfunc.el \
 	illusion.el \
-	cheat-font-lock.el \
-	howm-cl.el
+	cheat-font-lock.el
 
 EXTRA_DIST = Makefile.old bcomp.el howm-mkmenu.el $(howm_LISP) \
 	bcomp.el.in howm-version.el.in test.bat
@@ -36,7 +35,7 @@ TEST_INIT = sample/dot.emacs
 
 AM_MAKEFLAGS = HOWM_MAKE=t
 
-$(srcdir)/howm-version.el: $(srcdir)/howm-version.el.in $(srcdir)/configure.in Makefile
+$(srcdir)/howm-version.el: $(srcdir)/howm-version.el.in $(srcdir)/configure.ac Makefile
 	rm -f $@.tmp && \
 	sed -e 's/~\(VERSION\)~/$(VERSION)/' \
 		$(srcdir)/howm-version.el.in > $@.tmp && \

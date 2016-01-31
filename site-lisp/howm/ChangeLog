@@ -1,3 +1,121 @@
+2016-01-01  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* configure.ac: test version
+
+2016-01-01  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* howm.el: change the order of "require"s for correct dependencies
+
+	* action-lock.el: require howm-common for avoiding warning
+
+	* riffle.el: ditto.
+
+	* illusion.el: ditto.
+
+	* howm-lang-en.el: ditto.
+
+	* howm-lang-ja.el: ditto.
+
+	* howm-common.el (howm-insert-file-contents):
+	moved from howm-backend.el for yarot13-insert-file-contents
+
+	* howm-vars.el (howm-menu-action-arg): moved from howm-menu.el
+	for avoiding reference to free variable in howm-lang-*.el
+
+	* howm-backend.el (howm-exclude-p): moved from howm-common.el
+
+	* howm-mode.el (howm-history): moved from howm-common.el
+
+	* howm-common.el (howm-fontify): useless now
+
+2016-01-01  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* cheat-font-lock.el (cheat-font-lock-compiled-body):
+	avoid warning in byte-compilation
+	"... is not known to be defined."
+
+	* howm-date.el (howm-action-lock-date-search): ditto.
+	"function ... used to take 0+ arguments, now takes 1"
+
+	* howm-misc.el (howm-ime-fix): ditto.
+	delete obsolete fix for avoiding
+	"`howm-raise-in-minor-mode-map-alist' is not known to be defined."
+
+	* howm-vars.el (howm-dtime-format): ditto.
+	moved from howm-mode.el for avoiding
+	"... is not known to be defined." in `howm-write-log'.
+
+	* howm-common.el (howm-normalize-file-name): ditto.
+	moved from howm-misc.el for avoiding "not known to be defined."
+
+	* howm-vars.el (howm-excluded-file-regexp): ditto.
+
+2016-01-01  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* howm.el: update copyright years
+
+2015-12-31  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* howm.el: use cl-lib instead of cl for avoiding warnings
+
+	* howm-cl.el: howm-cl-* are now useless.
+
+2015-12-31  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* howm-backend.el
+	(howm-real-grep-single): use cl-labels for avoiding warnings
+	(howm-real-grep-multi): ditto.
+
+	* howm-view.el (howm-item-list-rangeset, tests): ditto.
+
+	* howm-reminder.el (howm-modify-form): ditto.
+
+	* howm-mode.el (howm-normalize): ditto.
+
+	* howm-misc.el (howm-basic-save-buffer): ditto.
+
+	* howm-common.el (howm-with-need, howm-call-process*): ditto.
+
+2015-12-31  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* configure.ac: version 1.4.3
+
+2015-12-27  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* configure.ac: version 1.4.3rc1
+
+	* howm-mode.el (howm-list-around): fix. howm-list-title didn't work.
+
+2015-05-24  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* configure.ac: test version
+
+	* howm-common.el (howm-subdirectory-p):
+	check "local/remote" for avoiding unnecessary password prompting
+	(cf. http://howm.osdn.jp/cgi-bin/hiki/hiki.cgi?Recentf)
+	thx > Koie-san (hide at koie.org)
+
+	* howm-misc.el (howm-normalize-file-name): ditto.
+
+2015-01-31  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	update autotools
+
+2015-01-31  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
+
+	* configure.in: test version
+
+	* howm-vars.el (howm-view-grep-default-option):
+	fix (void-function ed) error in git-head emacs (d5e3922)
+
+	* configure: use autoconf 2.69 instead of 2.67
+
+	* howm.el: update copyright years
+
+	* INSTALL: fix file mode
+
+	* COPYING: ditto.
+
 2013-12-31  HIRAOKA Kazuyuki  <khi@users.sourceforge.jp>
 
 	* configure.in: version 1.4.2

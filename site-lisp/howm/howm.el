@@ -1,5 +1,5 @@
 ;;; howm.el --- Wiki-like note-taking tool
-;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013
+;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016
 ;;;   HIRAOKA Kazuyuki <khi@users.sourceforge.jp>
 ;;; $Id: howm.el,v 1.22 2011-12-31 15:07:29 hira Exp $
 ;;;
@@ -36,9 +36,15 @@
 
 ;;; [1] cl
 
-(require 'howm-cl)
+(require 'cl-lib)
 
-;;; [2] my tools
+;;; [2] howm basic libraries
+
+(require 'howm-version)
+(require 'howm-vars)
+(require 'howm-common)
+
+;;; [3] my tools
 
 ;; This doesn't work in byte-compilation. I don't understand it. Sigh...
 ;; (mapcar #'require howm-required-features)
@@ -49,12 +55,6 @@
 (require 'riffle)
 (require 'action-lock)
 (require 'honest-report)
-
-;;; [3] howm basic libraries
-
-(require 'howm-version)
-(require 'howm-vars)
-(require 'howm-common)
 
 ;;; [4] howm main (this file)
 

@@ -1,5 +1,5 @@
 ;;; cheat-font-lock.el --- modify font-lock-keywords
-;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013
+;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016
 ;;;   HIRAOKA Kazuyuki <khi@users.sourceforge.jp>
 ;;; $Id: cheat-font-lock.el,v 1.24 2011-12-31 15:07:28 hira Exp $
 ;;;
@@ -59,11 +59,13 @@
   (>= (length (font-lock-compile-keywords '(("dummy" . 'dummy)))) 3)) ;; dirty
 (defun cheat-font-lock-compiled-p (keywords)
   (eq (car-safe keywords) t))
-(if (cheat-font-lock-20040624-format-p)
-    (defun cheat-font-lock-compiled-body (keywords)
-      (cddr keywords))
+(defun cheat-font-lock-compiled-body (keywords)
+  (cdr keywords))
+(when (cheat-font-lock-20040624-format-p)
+  ;; re-defun for avoiding the warning:
+  ;; "the function `...' is not known to be defined."
   (defun cheat-font-lock-compiled-body (keywords)
-    (cdr keywords)))
+    (cddr keywords)))
 (defun cheat-font-lock-keywords (keywords)
   (if (cheat-font-lock-compiled-p keywords)
       (cheat-font-lock-compiled-body keywords)

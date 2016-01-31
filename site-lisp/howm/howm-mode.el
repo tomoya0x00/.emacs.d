@@ -1,5 +1,5 @@
 ;;; howm-mode.el --- Wiki-like note-taking tool
-;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013
+;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016
 ;;;   HIRAOKA Kazuyuki <khi@users.sourceforge.jp>
 ;;; $Id: howm-mode.el,v 1.318 2012-12-29 08:57:18 hira Exp $
 ;;;
@@ -61,7 +61,6 @@ If it is a function, it is called to get template string with the argument <n>."
   "If non-nil, inhibit howm-list-title when search string matches file name")
 (defvar howm-list-all-title nil) ;; obsolete [2003-11-30]
 (defvar howm-list-recent-title nil) ;; obsolete [2003-11-30]
-(defvar howm-date-separator "-") ;; "-" ==> 2003-10-21
 
 (defvar howm-default-key-table
   '(
@@ -144,28 +143,6 @@ e.g. (\"-H\" \"::1\")")
   "Position of search string in `howm-wiki-regexp'")
 (howm-defvar-risky howm-wiki-format "[[%s]]"
   "Format for declaration of wiki word. See `format'.")
-
-;; Fix me: redundant (howm-date-* & howm-reminder-*)
-;; (cf.) howm-reminder-regexp-grep-* howm-reminder-today-format
-(defvar howm-date-regexp-grep
-  (concat "[1-2][0-9][0-9][0-9]" howm-date-separator
-          "[0-1][0-9]" howm-date-separator
-          "[0-3][0-9]"))
-(defvar howm-date-regexp
-  (concat "\\([1-2][0-9][0-9][0-9]\\)" howm-date-separator
-          "\\([0-1][0-9]\\)" howm-date-separator
-          "\\([0-3][0-9]\\)"))
-(defvar howm-date-regexp-year-pos 1)
-(defvar howm-date-regexp-month-pos 2)
-(defvar howm-date-regexp-day-pos 3)
-(defvar howm-date-format
-  (concat "%Y" howm-date-separator "%m" howm-date-separator "%d"))
-(defvar howm-dtime-body-format
-  (concat howm-date-format " %H:%M"))
-(defvar howm-dtime-format
-  (concat "[" howm-dtime-body-format "]"))
-(defvar howm-insert-date-format "[%s]")
-(defvar howm-insert-date-future nil)
 
 (howm-defvar-risky howm-template-rules
   '(("%title" . howm-template-title)
@@ -299,7 +276,7 @@ key	binding
   howm-lighter ;; mode-line
   (mapcar (lambda (entry)
             (let ((k (car entry))
-                  (f (second entry)))
+                  (f (cadr entry)))
               (cons (concat howm-prefix k) f)))
           howm-default-key-table)
   )
@@ -311,9 +288,9 @@ key	binding
 (defun howm-set-keymap ()
   (mapc (lambda (entry)
           (let* ((k (car entry))
-                 (f (second entry))
-                 (list-mode-p (third entry))
-                 (global-p (fourth entry))
+                 (f (cadr entry))
+                 (list-mode-p (cl-caddr entry))
+                 (global-p (cl-cadddr entry))
                  (pk (concat howm-prefix k)))
             (define-key howm-mode-map pk f)
             (when list-mode-p
@@ -348,10 +325,7 @@ key	binding
       (howm-action-lock-setup)
       (howm-mode-add-font-lock)
       (howm-reminder-add-font-lock)
-      ;; font-lock-fontify-buffer is necessary for emacs20,
-      ;; while -block is necessary for emacs21.
-      ;; I don't understand this. [2004-12-18]
-      (howm-fontify t)
+      (cheat-font-lock-fontify)
       ;; make-local-hook is obsolete for emacs >= 21.1.
       (howm-funcall-if-defined (make-local-hook 'after-save-hook))
       (add-hook 'after-save-hook 'howm-after-save t t))))
@@ -473,8 +447,8 @@ key	binding
     (howm-message-time "search"
       (let* ((trio (howm-call-view-search-internal regexp fixed-p emacs-regexp))
              (kw (car trio))
-             (name (second trio))
-             (items (third trio)))
+             (name (cadr trio))
+             (items (cl-caddr trio)))
         (when filter
           (setq items (funcall filter items)))
         (howm-normalize-show name items (or emacs-regexp regexp) nil nil kw)
@@ -582,7 +556,7 @@ key	binding
 
 (defmacro howm-with-normalizer (&rest body)
   (declare (indent 0))
-  (let ((g (howm-cl-gensym)))
+  (let ((g (cl-gensym)))
     `(progn
        (when (howm-normalize-oldp)
          (message
@@ -636,7 +610,7 @@ key	binding
                        (format "^%s$"
                                (regexp-quote (expand-file-name keyword)))))
             (case-fold-search howm-keyword-case-fold-search))
-        (labels ((check (tag flag reg &optional tag-when-multi-hits)
+        (cl-labels ((check (tag flag reg &optional tag-when-multi-hits)
                         (when flag
                           (let ((r (howm-normalize-check item-list tag reg
                                                          tag-when-multi-hits)))
@@ -779,14 +753,34 @@ We need entire-match in order to
   (let ((f (buffer-file-name))
         (item-list (howm-view-sort-by-reverse-date-internal
                     (howm-all-items))))
-    (howm-view-summary "" item-list)
-    (let ((pos (howm-cl-position-if (lambda (item)
+    (let ((howm-normalizer #'identity))
+      (howm-normalize-show "" item-list))
+    (let ((pos (cl-position-if (lambda (item)
                                       (string= (howm-item-name item) f))
-                                    item-list)))
+                                    (howm-view-item-list))))
       (goto-char (point-min))
       (when pos
         (forward-line pos)))
     (howm-view-summary-check t)))
+
+(defun howm-history ()
+  (interactive)
+  (unless (file-exists-p howm-history-file)
+    (error "No history."))
+  ;; disable expansion of %schedule etc.
+  (let ((howm-menu-display-rules nil)) ;; dirty
+    (howm-menu-open howm-history-file)))
+
+;; (defvar howm-history-exclude
+;;   (let ((strings '("[0-9][0-9][0-9][0-9]" "^[*=] [^ ]")))
+;;     `("| %.*%$"
+;;       ,(mapconcat 'regexp-quote strings "\\|"))))
+;; (defun howm-history ()
+;;   (interactive)
+;;   (howm-menu-open howm-history-file)
+;;   (howm-edit-read-only-buffer
+;;     (mapc #'flush-lines
+;;           howm-history-exclude)))
 
 (defvar *howm-command* nil
   "For internal use")
@@ -938,7 +932,7 @@ is necessary.")
 (defun howm-dup ()
   (interactive)
   (let* ((r (howm-view-paragraph-region))
-         (s (buffer-substring-no-properties (car r) (second r))))
+         (s (buffer-substring-no-properties (car r) (cadr r))))
     (howm-create-file)
     (howm-set-mode)
     (insert "\n" s)))
@@ -1047,10 +1041,10 @@ is necessary.")
 (defun howm-expand-aliases-recursively (keyword aliases)
   (let ((keys (list keyword))
         (prev nil))
-    (labels ((expand (keys)
-                     (sort (howm-cl-remove-duplicates
-                            (howm-cl-mapcan (lambda (k)
-                                              (howm-cl-mapcan
+    (cl-labels ((expand (keys)
+                     (sort (cl-remove-duplicates
+                            (cl-mapcan (lambda (k)
+                                              (cl-mapcan
                                                (lambda (a) (if (member k a)
                                                                (copy-sequence a)
                                                              nil))
@@ -1061,10 +1055,10 @@ is necessary.")
         (setq prev keys)
         (setq keys (expand keys))))
     keys))
-(assert (equal (howm-expand-aliases-recursively "a"
+(cl-assert (equal (howm-expand-aliases-recursively "a"
                                                 '(("d" "e" "f") ("a" "b" "c")))
                '("a" "b" "c")))
-(assert (equal (howm-expand-aliases-recursively "a"
+(cl-assert (equal (howm-expand-aliases-recursively "a"
                                                 '(("d" "e" "b") ("a" "b" "c")))
                '("a" "b" "c" "d" "e")))
 
@@ -1080,9 +1074,9 @@ KEYWORD itself is always at the head of the returneded list.
          (aliases (howm-aliases))
          (equiv (if howm-keyword-aliases-recursive
                     (howm-expand-aliases-recursively key aliases)
-                  (howm-cl-remove-duplicates
+                  (cl-remove-duplicates
                    (apply #'append
-                          (howm-cl-remove-if-not (lambda (a) (member key a))
+                          (cl-remove-if-not (lambda (a) (member key a))
                                                  aliases))))))
     (if (null equiv)
         keyword
@@ -1115,8 +1109,8 @@ KEYWORD itself is always at the head of the returneded list.
 ;;                         (howm-call-view-search r nil))
 ;;                     (howm-call-view-search aliases t))))
          (kw (car trio))
-         (name (second trio))
-         (items (third trio))
+         (name (cadr trio))
+         (items (cl-caddr trio))
          (items-pair nil)
          (found (if items t nil)) ;; want to forget items as soon as possible
          (matched (and found
@@ -1184,7 +1178,7 @@ KEYWORD itself is always at the head of the returneded list.
 (defun howm-keyword-for-goto (&optional keyword-list)
   (save-excursion
     (let ((case-fold-search howm-keyword-case-fold-search))
-      (sort (howm-cl-mapcan (lambda (k)
+      (sort (cl-mapcan (lambda (k)
                               (goto-char (point-min))
                               ;; when howm-check-word-break is non-nil,
                               ;; checking word breaks is desired for efficiency.

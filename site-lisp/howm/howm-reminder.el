@@ -1,5 +1,5 @@
 ;;; howm-reminder.el --- Wiki-like note-taking tool
-;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013
+;;; Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016
 ;;;   HIRAOKA Kazuyuki <khi@users.sourceforge.jp>
 ;;; $Id: howm-reminder.el,v 1.83 2012-12-29 08:57:18 hira Exp $
 ;;;
@@ -256,7 +256,7 @@ schedules outside the range in %reminder in the menu.")
          (rg (howm-reminder-regexp-grep types))
          (summarizer (howm-reminder-summarizer r t))
          (folder (howm-reminder-search-path-folder)))
-    (third (howm-view-search-folder-internal rg folder nil summarizer))))
+    (cl-caddr (howm-view-search-folder-internal rg folder nil summarizer))))
 
 (defun howm-list-reminder-final-setup (&optional name item-list)
   (howm-view-summary name item-list
@@ -332,7 +332,7 @@ This value is passed to `format-time-string', and the result must be a regexp."
          (to (+ today days 1))
          (howm-schedule-types howm-schedule-menu-types)  ;; dirty
          (raw (howm-reminder-search howm-schedule-types))
-         (filtered (howm-cl-remove-if #'(lambda (item)
+         (filtered (cl-remove-if #'(lambda (item)
                                           (let ((s (howm-schedule-date item)))
                                             (or (< s from)
                                                 (< to s))))
@@ -391,7 +391,7 @@ This value is passed to `format-time-string', and the result must be a regexp."
       (let ((items (need (howm-list-reminder-internal howm-todo-types))))
         (when pred
           (setq items
-                (need (howm-cl-remove-if-not pred items))))
+                (need (cl-remove-if-not pred items))))
         (setq items (howm-todo-sort-items items))
         (when howm-todo-separators
           (setq items
@@ -406,7 +406,7 @@ Items whose priority is worse than LIMIT-PRIORITY are eliminated.
 Separator strings are inserted to the returned list according to
 the rule given as SEPARATORS.
 See docstring of the variable `howm-menu-reminder-separators' for details."
-  (let* ((cutted (howm-cl-remove-if (lambda (item)
+  (let* ((cutted (cl-remove-if (lambda (item)
                                       (< (howm-todo-priority item)
                                          limit-priority))
                                     (howm-reminder-search howm-todo-menu-types)))
@@ -484,8 +484,8 @@ Example: (howm-todo-parse-string \"abcde [2004-11-04]@ hogehoge\")
 (defun howm-todo-priority (item)
   (let* ((p (howm-todo-parse item))
          (late (car p))
-         (type (second p))
-         (lazy (third p))
+         (type (cadr p))
+         (lazy (cl-caddr p))
          (f (or (cdr (assoc type howm-todo-priority-func))
                 #'howm-todo-priority-unknown)))
     (funcall f late lazy item)))
@@ -604,14 +604,14 @@ When D is omitted, the current time is encoded.
 When D is t, the beginning of today is encoded."
   (let* ((e (apply #'encode-time (cond ((eq d t)
                                         (let ((now (howm-decode-time)))
-                                          (append '(0 0 0) (cdddr now))))
+                                          (append '(0 0 0) (cl-cdddr now))))
                                        (d
                                         (mapcar #'string-to-number
                                                 (list "0" "0" "0" d m y)))
                                        (t
                                         (howm-decode-time)))))
          (hi (car e))
-         (low (second e))
+         (low (cadr e))
          (daysec (* 60 60 24.0)))
     (+ (* hi (/ 65536 daysec)) (/ low daysec))))
 
@@ -750,7 +750,7 @@ When D is t, the beginning of today is encoded."
   (howm-modify-form #'action-lock-invoke form-reg cursor-reg))
 
 (defun howm-modify-form (proc form-reg cursor-reg &rest args)
-  (labels
+  (cl-labels
       ((f-cursor ()
                  (beginning-of-line)
                  (re-search-forward cursor-reg
@@ -817,8 +817,8 @@ When D is t, the beginning of today is encoded."
 (defun howm-extend-deadlines (days)
   "Extend all overdue deadlines for DAYS from today."
   (interactive "nHow many days? ")
-  (let ((hit (howm-cl-remove-if (lambda (item)
-                             (< (second (howm-reminder-parse item)) 0))
+  (let ((hit (cl-remove-if (lambda (item)
+                             (< (cadr (howm-reminder-parse item)) 0))
                            (howm-reminder-search "!"))))
     (mapc (lambda (item)
             (howm-modify-in-background (lambda (item dummy)
@@ -868,7 +868,7 @@ or TODO is t."
          (reminder-menu (or schedule-menu todo-menu)))
     ;; Don't modify howm-reminder-marks.
     ;; Otherwise, defcustom will be confused for howm-reminder-menu-types, etc.
-    (howm-cl-mapcar* (lambda (var flag)
+    (cl-mapcar (lambda (var flag)
                        (howm-modify-reminder-types var letter flag))
                      '(howm-reminder-types
                        howm-schedule-types howm-todo-types
