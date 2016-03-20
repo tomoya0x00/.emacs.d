@@ -55,7 +55,7 @@
 ;; C-SPCを無効
 (global-set-key "\C-[SPC]"  nil)
 
-;;backward-delete-char-untabify-method での消去方法を変える
+;; backward-delete-char-untabify-method での消去方法を変える
 
 (setq backward-delete-char-untabify-method nil)
 
@@ -78,8 +78,15 @@
   '((substring year -2) "/" month "/" day " " dayname))
 (display-time)
 
+;; undohist
+(when (require 'undohist nil t)
+  (undohist-initialize))
+
 ;;関連する括弧を強調表示
-(show-paren-mode 1)
+(show-paren-mode t)
+(setq show-paren-style 'expression)
+(set-face-background 'show-paren-match-face nil)
+(set-face-underline-p 'show-paren-match-face "yellow")
 
 ;; モード名を短くする
 ;; Texinfo も長い
@@ -428,8 +435,12 @@ check for the whole contents of FILE, otherwise check for the first
 
 (require 'auto-complete)
 (require 'go-autocomplete)
-(require 'auto-complete-config)
-(global-auto-complete-mode t)
+(when (require 'auto-complete-config nil t)
+  (add-to-list 'ac-dictionary-directories
+               "~/.emacs.d/elisp/ac-dict")
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (ac-config-default)
+  (global-auto-complete-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; go-mode.el
@@ -464,6 +475,8 @@ check for the whole contents of FILE, otherwise check for the first
 
             (set (make-local-variable 'compile-command)
                  "go generate && go build -v && go vet")))
+
+(require 'go-dlv)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake.el
@@ -767,6 +780,11 @@ check for the whole contents of FILE, otherwise check for the first
 (global-set-key "\C-c\C-m" 'moccur)
 (global-set-key "\C-c\C-o" 'search-buffers)
 
+;; moccur-edit-finish-editと同時にファイル保存
+(defadvice moccur-edit-change-file
+    (after save-after-moccur-edit-buffer activate)
+  (save-buffer))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ag
 ;; -> http://kotatu.org/blog/2013/12/18/emacs-ag-wgrep-for-code-grep-search/
@@ -830,11 +848,41 @@ check for the whole contents of FILE, otherwise check for the first
 (global-set-key [?\C-;] 	'helm-mini)
 (global-set-key "\M-y" 		'helm-show-kill-ring)
 (global-set-key "\M-o" 		'helm-occur)
-;;(global-set-key "\M-x"     	'helm-M-x)
+(global-set-key "\M-x"     	'helm-M-x)
 (global-set-key "\C-x\C-f" 'helm-find-files)
 (global-unset-key "\C-x\C-r")
 (global-set-key "\C-x\C-r" 	'helm-recentf)
 (global-set-key "\C-c\C-g"  'helm-imenu)
+
+(defvar helm-source-emacs-commands
+  (helm-build-sync-source "Emacs commands"
+    :candidates (lambda ()
+                  (let ((cmds))
+                    (mapatoms
+                     (lambda (elt) (when (commandp elt) (push elt cmds))))
+                    cmds))
+    :coerce #'intern-soft
+    :action #'command-execute)
+  "A simple helm source for Emacs commands.")
+
+(defvar helm-source-emacs-commands-history
+  (helm-build-sync-source "Emacs commands history"
+    :candidates (lambda ()
+                  (let ((cmds))
+                    (dolist (elem extended-command-history)
+                      (push (intern elem) cmds))
+                    cmds))
+    :coerce #'intern-soft
+    :action #'command-execute)
+  "Emacs commands history")
+
+(custom-set-variables
+ '(helm-mini-default-sources '(helm-source-buffers-list
+                               helm-source-recentf
+                               helm-source-files-in-current-dir
+                               helm-source-emacs-commands-history
+                               helm-source-emacs-commands
+                               )))
 
 ;; isearchからhelm-occurを起動
 (define-key isearch-mode-map (kbd "C-o") 'helm-occur-from-isearch)
@@ -889,6 +937,7 @@ check for the whole contents of FILE, otherwise check for the first
 (add-to-list 'helm-source-buffers-list
              '(pattern-transformer helm-buffers-list-pattern-transformer))
 
+(global-ace-isearch-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; magit
@@ -1115,3 +1164,16 @@ type1 はセパレータを消去するもの。")
                  minibuffer-local-must-match-map))))
 
 (put 'downcase-region 'disabled nil)
+
+;; リージョン内の行数と文字数をモードラインに表示する（範囲指定時のみ）
+;; http://d.hatena.ne.jp/sonota88/20110224/1298557375
+(defun count-lines-and-chars ()
+  (if mark-active
+      (format "%d lines,%d chars "
+              (count-lines (region-beginning) (region-end))
+              (- (region-end) (region-beginning)))
+      ;;(count-lines-region (region-beginning) (region-end)) ;; これだとエコーエリアがチラつく
+    ""))
+
+(add-to-list 'default-mode-line-format
+             '(:eval (count-lines-and-chars)))
