@@ -472,11 +472,14 @@ check for the whole contents of FILE, otherwise check for the first
             (local-set-key (kbd "C-x t") 'go-test-current-test)
             (local-set-key (kbd "C-x p") 'go-test-current-project)
             (local-set-key (kbd "C-x x") 'go-run)
+            (local-set-key (kbd "C-c C-f") 'moccur-grep-find)
 
             (set (make-local-variable 'compile-command)
                  "go generate && go build -v && go vet")))
 
 (require 'go-dlv)
+
+(require 'golint)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake.el
@@ -491,7 +494,8 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;(add-hook 'after-init-hook #'global-flycheck-mode)
-;;(require 'go-flycheck)
+(require 'go-flycheck)
+(add-hook 'go-mode-hook 'flycheck-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; howm.el
@@ -848,11 +852,12 @@ check for the whole contents of FILE, otherwise check for the first
 (global-set-key [?\C-;] 	'helm-mini)
 (global-set-key "\M-y" 		'helm-show-kill-ring)
 (global-set-key "\M-o" 		'helm-occur)
-(global-set-key "\M-x"     	'helm-M-x)
+(global-set-key "\M-\C-o" 		'occur-by-moccur)
+;;(global-set-key "\M-x"     	'helm-M-x)
 (global-set-key "\C-x\C-f" 'helm-find-files)
 (global-unset-key "\C-x\C-r")
 (global-set-key "\C-x\C-r" 	'helm-recentf)
-(global-set-key "\C-c\C-g"  'helm-imenu)
+(global-set-key "\C-cg"  'helm-imenu)
 
 (defvar helm-source-emacs-commands
   (helm-build-sync-source "Emacs commands"
@@ -946,6 +951,7 @@ check for the whole contents of FILE, otherwise check for the first
 
 (global-set-key (kbd "C-x g") 'magit-status)
 (setq magit-git-executable "C:/Program Files/Git/cmd/git.exe")
+(setenv "SSH_ASKPASS" "git-gui--askpass")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c-mode用のいろいろな設定
@@ -1177,3 +1183,10 @@ type1 はセパレータを消去するもの。")
 
 (add-to-list 'default-mode-line-format
              '(:eval (count-lines-and-chars)))
+;; ctags
+
+(require 'ctags nil t)
+(setq tags-revert-without-query t)
+(setq ctags-command "ctags -R --fields=\"+afikKlmnsSzt\" ")
+(global-set-key (kbd "<f5>") 'ctags-create-or-update-tags-table)
+(global-set-key (kbd "M-.") 'ctags-search)
