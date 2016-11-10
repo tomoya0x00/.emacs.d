@@ -633,6 +633,17 @@ check for the whole contents of FILE, otherwise check for the first
 (global-fuzzy-format-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; real-auto-save.el
+;; バッファを自動保存させる
+;; -> http://rubikitch.com/2015/02/03/real-auto-save/
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (require 'real-auto-save)               
+;; (setq real-auto-save-interval 3)        ;3秒後に自動保存
+;; (add-hook 'prog-mode-hook 'real-auto-save-mode)
+;; (add-hook 'find-file-hook 'real-auto-save-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; imenu
 ;; 関数定義へジャンプ
 ;; ->http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=imenu
@@ -1016,23 +1027,34 @@ check for the whole contents of FILE, otherwise check for the first
 (setq markdown-command "perl C:/strawberry/script/Markdown.pl")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; sh-script
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(add-hook 'sh-mode-hook
+          '(lambda ()
+             (setq indent-tabs-mode nil)
+             (setq sh-basic-offset 2)
+             (setq sh-indentation 2)
+))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; javascript
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(eval-after-load 'json-mode
-  '(add-hook 'json-mode-hook
-             (lambda ()
-               (add-hook 'before-save-hook 'web-beautify-js-buffer t t))))
+;; (eval-after-load 'json-mode
+;;   '(add-hook 'json-mode-hook
+;;              (lambda ()
+;;                (add-hook 'before-save-hook 'web-beautify-js-buffer t t))))
 
-(eval-after-load 'sgml-mode
-  '(add-hook 'html-mode-hook
-             (lambda ()
-               (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
+;; (eval-after-load 'sgml-mode
+;;   '(add-hook 'html-mode-hook
+;;              (lambda ()
+;;                (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
 
-(eval-after-load 'css-mode
-  '(add-hook 'css-mode-hook
-             (lambda ()
-               (add-hook 'before-save-hook 'web-beautify-css-buffer t t))))
+;; (eval-after-load 'css-mode
+;;   '(add-hook 'css-mode-hook
+;;              (lambda ()
+;;                (add-hook 'before-save-hook 'web-beautify-css-buffer t t))))
 
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
@@ -1041,7 +1063,7 @@ check for the whole contents of FILE, otherwise check for the first
       '(lambda ()
          (setq js2-basic-offset 2)
          (setq tab-width 2)
-         (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
+ ;;        (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
          (ac-js2-mode)
          ))
 
