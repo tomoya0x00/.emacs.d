@@ -267,22 +267,22 @@ check for the whole contents of FILE, otherwise check for the first
 ;; -> http://www.emacswiki.org/cgi-bin/wiki/cygwin-mount.el
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'cygwin-mount)
-(cygwin-mount-activate)
+;; (require 'cygwin-mount)
+;; (cygwin-mount-activate)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(custom-enabled-themes (quote (tango-dark))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; (custom-set-variables
+;;  ;; custom-set-variables was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+;;  '(custom-enabled-themes (quote (tango-dark))))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; guide-key
@@ -713,13 +713,13 @@ check for the whole contents of FILE, otherwise check for the first
 ;; migemo をオフにする
 (defadvice isearch-yank-string
   (before migemo-off activate)
-  (setq migemo-isearch-enable-p nil))
+  (defvar migemo-isearch-enable-p nil))
 
 ;; isearch で検索する時には
 ;; migemo をオンにする
 (defadvice isearch-mode
   (before migemo-on activate)
-  (setq migemo-isearch-enable-p t))
+  (defvar migemo-isearch-enable-p t))
 
 ;; buffer-file-coding-system から言語判別
 ;; unicode も入れた方がいいのかも。
@@ -737,12 +737,11 @@ check for the whole contents of FILE, otherwise check for the first
      (defadvice isearch-mode
        (before my-migemo-off activate)
        (unless (my-language-check "Japanese")
-         (make-local-variable 'migemo-isearch-enable-p)
-         (setq migemo-isearch-enable-p nil)))
+         (defvar migemo-isearch-enable-p nil)))
      (add-hook 'isearch-mode-end-hook
                (lambda ()
                  (unless (my-language-check "Japanese")
-                   (setq migemo-isearch-enable-p t))))))
+                   (defvar migemo-isearch-enable-p t))))))
 
 
 ;; migemo
@@ -858,13 +857,11 @@ check for the whole contents of FILE, otherwise check for the first
 
 (require 'helm-config)
 
-(require 'helm-migemo)
-(setq helm-use-migemo t)
-
 (require 'helm-descbinds)
 (helm-descbinds-mode)
 
 (helm-mode 1)
+(helm-migemo-mode 1)
 
 (global-unset-key [?\C-;])
 (global-set-key [?\C-;] 	'helm-mini)
@@ -1239,3 +1236,7 @@ type1 はセパレータを消去するもの。")
 (setq ctags-command "ctags -R --fields=\"+afikKlmnsSzt\" ")
 (global-set-key (kbd "<f5>") 'ctags-create-or-update-tags-table)
 (global-set-key (kbd "M-.") 'ctags-search)
+
+;; theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'badwolf t)
