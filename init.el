@@ -231,17 +231,6 @@ check for the whole contents of FILE, otherwise check for the first
 ;; C-h -> backspace
 (keyboard-translate ?\C-h ?\C-?)
 
-;; バッファ切り替え
-;; (setq iswitchb-mode t)
-;; (setq iswitchb-buffer-ignore '("^ " "^TAGS" "\\*GTAGS SELECT" "\\*Ibuffer\\*"))
-
-;; 起動時のフレームサイズをディスプレイ解像度に応じて縦いっぱいに
-;; (when window-system
-;;  (set-frame-size
-;;   (selected-frame)
-;;   83 ;横サイズ
-;;   (- (/ (- (x-display-pixel-height) 85) (frame-char-height)) 1)))
-
 ;; ibuffer
 (setq ibuffer-default-sorting-mode 'recency)
 (global-unset-key "\C-x\C-b")
@@ -362,45 +351,6 @@ check for the whole contents of FILE, otherwise check for the first
                      (unless (member "*scratch*" (my-buffer-name-list))
                        (my-make-scratch 1)))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; mcomplete.el
-;; ミニバッファ補完機構の補強
-;; -> http://homepage1.nifty.com/bmonkey/emacs/
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;(autoload 'mcomplete-mode "mcomplete"
-;;  "Toggle minibuffer completion with prefix and substring matching."
-;;  t nil)
-;;(autoload 'turn-on-mcomplete-mode "mcomplete"
-;;  "Turn on minibuffer completion with prefix and substring matching."
-;;  t nil)
-;;(autoload 'turn-off-mcomplete-mode "mcomplete"
-;;  "Turn off minibuffer completion with prefix and substring matching."
-;;  t nil)
-;;
-;;(turn-on-mcomplete-mode)
-;;
-;;;; mcomplete では標準でヒストリを使わない
-;;(defcustom mcomplete-default-method-set
-;;  '(mcomplete-prefix-method mcomplete-substr-method)
-;;  "List of completion methods.  The first method is applied first."
-;;  :type  '(repeat function)
-;;  :group 'mcomplete)
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Window の分割情報を保存　タブも表示
-;; -> http://www.bookshelf.jp/soft/meadow_30.html#SEC393
-;; -> http://www.morishima.net/~naoto/software/elscreen/index.php.ja
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (setq elscreen-display-tab 12) ; タブの幅（６以上じゃないとダメ）
-;; (setq elscreen-tab-display-kill-screen nil) ; タブの左端の×を非表示
-;; (load "elscreen-gf" t)          ; grepなどを使えるように
-;; (load "elscreen-color-theme" t) ; color-themeとの連携
-;; (global-set-key [C-tab] 'elscreen-next)
-;; (global-set-key [C-S-tab] 'elscreen-previous)
-
-;; (elscreen-start)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; tab-bar.el
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -469,22 +419,6 @@ check for the whole contents of FILE, otherwise check for the first
 (global-set-key (kbd "C-/") 'redo) ;; C-/
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; auto-complete.el
-;; テキスト補完入力
-;; -> http://cx4a.org/software/auto-complete/index.ja.html
-;; -> http://dev.ariel-networks.com/wp/documents/aritcles/emacs/part9
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (require 'auto-complete)
-;; (require 'go-autocomplete)
-;; (when (require 'auto-complete-config nil t)
-;;   (add-to-list 'ac-dictionary-directories
-;;                "~/.emacs.d/elisp/ac-dict")
-;;   (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-;;   (ac-config-default)
-;;   (global-auto-complete-mode t))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; go-mode.el
 ;; -> http://unknownplace.org/archives/golang-editing-with-emacs.html
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -521,15 +455,6 @@ check for the whole contents of FILE, otherwise check for the first
 
 (require 'go-dlv)
 
-;; (require 'golint)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; flymake.el
-;; -> http://unknownplace.org/archives/golang-editing-with-emacs.html
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;(require 'go-flymake)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flycheck.el
 ;; -> http://unknownplace.org/archives/golang-editing-with-emacs.html
@@ -565,27 +490,6 @@ check for the whole contents of FILE, otherwise check for the first
 (setq howm-menu-refresh-after-save nil) 
 
 (setq howm-menu-file "~/howm/0000-00-00-000000.howm")
-
-;; howm の時は auto-fill で
-;;(add-hook 'howm-mode-on-hook 'auto-fill-mode)
-
-;; ripgrep
-;; http://extra-vision.blogspot.jp/2016/12/howm-ripgrep.html
-;; (setq howm-view-use-grep t)
-;; (setq howm-view-grep-command "rg")
-;; (setq howm-view-grep-option "-nH --no-heading --color never")
-;; (setq howm-view-grep-extended-option nil)
-;; (setq howm-view-grep-fixed-option "-F")
-;; (setq howm-view-grep-expr-option nil)
-;; (setq howm-view-grep-file-stdin-option nil)
-
-;; ;; howm-menu で -j1 オプションを使う
-;; (defun howm-menu-with-j1 (orig-fun &rest args)
-;;   (setq howm-view-grep-option "-nH --no-heading -j1 --color never")
-;;   (apply orig-fun args)
-;;   (setq howm-view-grep-option "-nH --no-heading --color never"))
-;; 
-;;   (advice-add 'howm-menu-refresh :around #'howm-menu-with-j1)
 
 ;; 完了済みのToDoは表示しない
 (setq howm-kE2todo-menu-types "[-+~!]")
@@ -700,68 +604,6 @@ check for the whole contents of FILE, otherwise check for the first
 
 (autoload 'dockerfile-mode "dockerfile-mode" nil t)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; real-auto-save.el
-;; バッファを自動保存させる
-;; -> http://rubikitch.com/2015/02/03/real-auto-save/
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (require 'real-auto-save)               
-;; (setq real-auto-save-interval 3)        ;3秒後に自動保存
-;; (add-hook 'prog-mode-hook 'real-auto-save-mode)
-;; (add-hook 'find-file-hook 'real-auto-save-mode)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; imenu
-;; 関数定義へジャンプ
-;; ->http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=imenu
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (autoload 'imenu "imenu" nil t)
-;; (defcustom imenu-modes
-;;  '(emacs-lisp-mode c-mode c++-mode makefile-mode)
-;;  "List of major modes for which Imenu mode should be used."
-;;  :group 'imenu
-;;  :type '(choice (const :tag "All modes" t)
-;;                 (repeat (symbol :tag "Major mode"))))
-;; (defun my-imenu-ff-hook ()
-;;  "File find hook for Imenu mode."
-;;  (if (member major-mode imenu-modes)
-;;      (imenu-add-to-menubar "imenu")))
-
-;; (add-hook 'find-file-hooks 'my-imenu-ff-hook t)
-
-;; ;; C-c C-gで imenu を起動
-;; (global-set-key "\C-c\C-g" 'imenu)
-
-;; ;; imenuでmcomplete
-;; (defadvice imenu--completion-buffer
-;;  (around mcomplete activate preactivate)
-;;  "Support for mcomplete-mode."
-;;  (require 'mcomplete)
-;;  (let ((imenu-use-popup-menu 'never) 
-;; ; (let ((imenu-always-use-completion-buffer-p 'never)
-;;        (mode mcomplete-mode)
-;;        ;; the order of completion methods
-;;        (mcomplete-default-method-set '(mcomplete-substr-method
-;;                                        mcomplete-prefix-method))
-;;        ;; when to display completion candidates in the minibuffer
-;;        (mcomplete-default-exhibit-start-chars 0)
-;;        (completion-ignore-case nil)
-;;        (partial-completion-mode t))
-;;    ;; display *Completions* buffer on entering the minibuffer
-;;    (setq unread-command-events
-;;          (cons (funcall (if (fboundp 'character-to-event)
-;;                             'character-to-event
-;;                           'identity)
-;;                         ?\?)
-;;                unread-command-events))
-;;    (turn-on-mcomplete-mode)
-;;    (unwind-protect
-;;        ad-do-it
-;;      (unless mode
-;;        (turn-off-mcomplete-mode)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 日本語でインクリメンタルサーチ
@@ -903,124 +745,6 @@ check for the whole contents of FILE, otherwise check for the first
                     (select-window      ; select ag buffer
                      (car (my/get-buffer-window-list-regexp "^\\*ag ")))))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; pt
-;; -> https://github.com/monochromegane/the_platinum_searcher
-;; -> https://github.com/bling/pt.el
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; helm
-;; -> http://d.hatena.ne.jp/tomoya/20130519/1368942603
-;; -> http://d.hatena.ne.jp/a_bicky/20140104/1388822688
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'helm-config)
-
-(require 'helm-descbinds)
-(helm-descbinds-mode)
-
-(helm-mode 1)
-(helm-migemo-mode 1)
-
-(global-unset-key [?\C-;])
-(global-set-key [?\C-;] 	'helm-mini)
-(global-set-key "\M-y" 		'helm-show-kill-ring)
-(global-set-key "\M-o" 		'helm-occur)
-(global-set-key "\M-\C-o" 		'occur-by-moccur)
-;;(global-set-key "\M-x"     	'helm-M-x)
-(global-set-key "\C-x\C-f" 'helm-find-files)
-(global-unset-key "\C-x\C-r")
-(global-set-key "\C-x\C-r" 	'helm-recentf)
-(global-set-key "\C-cg"  'helm-imenu)
-
-(defvar helm-source-emacs-commands
-  (helm-build-sync-source "Emacs commands"
-    :candidates (lambda ()
-                  (let ((cmds))
-                    (mapatoms
-                     (lambda (elt) (when (commandp elt) (push elt cmds))))
-                    cmds))
-    :coerce #'intern-soft
-    :action #'command-execute)
-  "A simple helm source for Emacs commands.")
-
-(defvar helm-source-emacs-commands-history
-  (helm-build-sync-source "Emacs commands history"
-    :candidates (lambda ()
-                  (let ((cmds))
-                    (dolist (elem extended-command-history)
-                      (push (intern elem) cmds))
-                    cmds))
-    :coerce #'intern-soft
-    :action #'command-execute)
-  "Emacs commands history")
-
-(custom-set-variables
- '(helm-mini-default-sources '(helm-source-buffers-list
-                               helm-source-recentf
-                               helm-source-files-in-current-dir
-                               helm-source-emacs-commands-history
-                               helm-source-emacs-commands
-                               )))
-
-;; isearchからhelm-occurを起動
-(define-key isearch-mode-map (kbd "C-o") 'helm-occur-from-isearch)
-
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-
-;; Emulate `kill-line' in helm minibuffer
-(setq helm-delete-minibuffer-contents-from-point t)
-(defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
-  "Emulate `kill-line' in helm minibuffer"
-  (kill-new (buffer-substring (point) (field-end))))
-;; For find-file etc.
-(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-;; For helm-find-files etc.
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-
-(defadvice helm-ff-kill-or-find-buffer-fname (around execute-only-if-exist activate)
-  "Execute command only if CANDIDATE exists"
-  (when (file-exists-p candidate)
-    ad-do-it))
-
-(defadvice helm-ff-transform-fname-for-completion (around my-transform activate)
-  "Transform the pattern to reflect my intention"
-  (let* ((pattern (ad-get-arg 0))
-         (input-pattern (file-name-nondirectory pattern))
-         (dirname (file-name-directory pattern)))
-    (setq input-pattern (replace-regexp-in-string "\\." "\\\\." input-pattern))
-    (setq ad-return-value
-          (concat dirname
-                  (if (string-match "^\\^" input-pattern)
-                      ;; '^' is a pattern for basename
-                      ;; and not required because the directory name is prepended
-                      (substring input-pattern 1)
-                    (concat ".*" input-pattern))))))
-
-(defun helm-buffers-list-pattern-transformer (pattern)
-  (if (equal pattern "")
-      pattern
-    ;; Escape '.' to match '.' instead of an arbitrary character
-    (setq pattern (replace-regexp-in-string "\\." "\\\\." pattern))
-    (let ((first-char (substring pattern 0 1)))
-      (cond ((equal first-char "*")
-             (concat " " pattern))
-            ((equal first-char "=")
-             (concat "*" (substring pattern 1)))
-            (t
-             pattern)))))
-
-(add-to-list 'helm-source-buffers-list
-             '(pattern-transformer helm-buffers-list-pattern-transformer))
-
-(global-ace-isearch-mode 1)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; magit
 ;; -> https://github.com/magit/magit
@@ -1107,21 +831,6 @@ check for the whole contents of FILE, otherwise check for the first
 ;; javascript
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (eval-after-load 'json-mode
-;;   '(add-hook 'json-mode-hook
-;;              (lambda ()
-;;                (add-hook 'before-save-hook 'web-beautify-js-buffer t t))))
-
-;; (eval-after-load 'sgml-mode
-;;   '(add-hook 'html-mode-hook
-;;              (lambda ()
-;;                (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
-
-;; (eval-after-load 'css-mode
-;;   '(add-hook 'css-mode-hook
-;;              (lambda ()
-;;                (add-hook 'before-save-hook 'web-beautify-css-buffer t t))))
-
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
 
@@ -1134,27 +843,9 @@ check for the whole contents of FILE, otherwise check for the first
          ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; http://d.hatena.ne.jp/serian/20121115/p1
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (eval-after-load "gnutls"
-;;   '(setq gnutls-trustfiles '("c:/cygwin64/usr/ssl/certs/ca-bundle.trust.crt"
-;;                              "c:/cygwin64/usr/ssl/certs/ca-bundle.crt")))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; egg
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'egg)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; companyy
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (require 'company)
-;; (setq company-idle-delay 0.1) ; デフォルトは0.5
-;; (setq company-minimum-prefix-length 2) ; デフォルトは4
-;; (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Elpy
