@@ -470,7 +470,6 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; howmible
-(add-to-list 'load-path "~/.emacs.d/site-lisp/howm/")
 (setq howm-directory "~/howm")
 (setq howm-menu-lang 'ja)
 (require 'howm)
