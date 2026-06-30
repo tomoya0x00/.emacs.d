@@ -492,7 +492,7 @@ check for the whole contents of FILE, otherwise check for the first
 (setq howm-menu-file "~/howm/0000-00-00-000000.howm")
 
 ;; 完了済みのToDoは表示しない
-(setq howm-kE2todo-menu-types "[-+~!]")
+(setq howm-todo-menu-types "[-+~!]")
 
 ;; RET でファイルを開く際, 一覧バッファを消す
 ;; C-u RET なら残る
