@@ -9,3 +9,9 @@
 # Other
 ac-comphist.dat
 .session
+
+# Secrets / OS / runtime
+.ssh/
+.DS_Store
+custom.el
+undohist/
