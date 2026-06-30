@@ -18,3 +18,5 @@ recentf*
 .DS_Store
 custom.el
 undohist/
+network-security.data
+server/server
