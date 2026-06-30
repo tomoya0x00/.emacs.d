@@ -9,6 +9,9 @@
 # Other
 ac-comphist.dat
 .session
+.session*
+recentf
+recentf*
 
 # Secrets / OS / runtime
 .ssh/
