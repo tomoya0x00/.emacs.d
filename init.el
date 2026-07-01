@@ -436,14 +436,12 @@ check for the whole contents of FILE, otherwise check for the first
                               'mode-line-inactive)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; session.el
-;; ミニバッファの保存や各ファイルに開いた際の行数のマークとかとか
-;; -> http://moya-notes.blogspot.jp/2013/02/emacs24-config-on-mac.html
+;; savehist / save-place (built-in)
+;; ミニバッファ履歴の保存とファイルごとのカーソル位置復元
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
-(setq session-save-print-spec '(t nil nil))
+(savehist-mode 1)
+(save-place-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; redo (built-in undo-redo, Emacs 28+)
@@ -476,8 +474,6 @@ check for the whole contents of FILE, otherwise check for the first
 
             (set (make-local-variable 'compile-command)
                  "go generate && go build -v && go vet")))
-
-(require 'go-dlv)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flycheck.el
@@ -619,16 +615,6 @@ check for the whole contents of FILE, otherwise check for the first
               (howm-mode 1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; fuzzy-format.el
-;; インデントがタブかスペースか区別して良い感じに扱う
-;; -> http://d.hatena.ne.jp/grandVin/20090114/1231910330
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'fuzzy-format)
-(setq fuzzy-format-default-indent-tabs-mode nil)
-(global-fuzzy-format-mode t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; dockerfile-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -703,39 +689,10 @@ check for the whole contents of FILE, otherwise check for the first
 (global-set-key "\C-ct" 'insert-timestamp)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ag
-;; -> http://kotatu.org/blog/2013/12/18/emacs-ag-wgrep-for-code-grep-search/
+;; grep (consult-ripgrep)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'ag)
-(custom-set-variables
- '(ag-highlight-search t)       ; 検索結果の中の検索語をハイライトする
- '(ag-reuse-window 'nil)        ; 現在のウィンドウを検索結果表示に使う
- '(ag-reuse-buffers 'nil))      ; 現在のバッファを検索結果表示に使う
-;; (require 'wgrep-ag)
-;; (autoload 'wgrep-ag-setup "wgrep-ag")
-;; (add-hook 'ag-mode-hook 'wgrep-ag-setup)
-;; agの検索結果バッファで"r"で編集モードに。
-;; C-x C-sで保存して終了、C-x C-kで保存せずに終了
-;; (define-key ag-mode-map (kbd "r") 'wgrep-change-to-wgrep-mode)
-;; キーバインドを適当につけておくと便利。"\C-xg"とか
-(global-set-key [(super m)] 'ag)
-;; ag開いたらagのバッファに移動するには以下をつかう
-(defun my/filter (condp lst)
-  (delq nil
-        (mapcar (lambda (x) (and (funcall condp x) x)) lst)))
-(defun my/get-buffer-window-list-regexp (regexp)
-  "Return list of windows whose buffer name matches regexp."
-  (my/filter #'(lambda (window)
-                 (string-match regexp
-                               (buffer-name (window-buffer window))))
-             (window-list)))
-(global-set-key [(super m)]
-                #'(lambda ()
-                    (interactive)
-                    (call-interactively 'ag)
-                    (select-window      ; select ag buffer
-                     (car (my/get-buffer-window-list-regexp "^\\*ag ")))))
+(global-set-key [(super m)] 'consult-ripgrep)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; magit
@@ -825,22 +782,6 @@ check for the whole contents of FILE, otherwise check for the first
 
 ;; 組み込みの js-mode / js-json-mode を使う（インデント幅のみ設定）
 (setq js-indent-level 2)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; egg
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'egg)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Elpy
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(elpy-enable)
-
-(add-hook 'elpy-mode-hook
-          '(lambda ()
-             (setq company-idle-delay 0.1) ; デフォルトは0.5
-             ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://ko.meadowy.net/~shirai/diary/20030819.html#p01
@@ -966,13 +907,6 @@ type1 はセパレータを消去するもの。")
 
 (add-to-list 'mode-line-format
              '(:eval (count-lines-and-chars)))
-;; ctags
-
-(require 'ctags nil t)
-(setq tags-revert-without-query t)
-(setq ctags-command "ctags -R --fields=\"+afikKlmnsSzt\" ")
-(global-set-key (kbd "<f5>") 'ctags-create-or-update-tags-table)
-(global-set-key (kbd "M-.") 'ctags-search)
 
 ;; theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")

@@ -13,6 +13,8 @@ ac-comphist.dat
 .session*
 recentf
 recentf*
+history
+places
 
 # Secrets / OS / runtime
 .ssh/
