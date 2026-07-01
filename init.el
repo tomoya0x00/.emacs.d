@@ -457,12 +457,11 @@ check for the whole contents of FILE, otherwise check for the first
 (setq session-save-print-spec '(t nil nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; redo+.el
+;; redo (built-in undo-redo, Emacs 28+)
 ;; redo を可能に
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'redo+)
-(global-set-key (kbd "C-/") 'redo) ;; C-/
+(global-set-key (kbd "C-/") 'undo-redo) ;; C-/
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; go-mode.el
