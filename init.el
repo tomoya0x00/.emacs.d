@@ -302,7 +302,6 @@ check for the whole contents of FILE, otherwise check for the first
        (fset 'ask-user-about-supersession-threat
              old-supersession-threat)))))
 
-;;(define-key ctl-x-map "\C-r"  'reopen-file)
 (global-set-key "\C-cr" 'reopen-file)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -350,6 +349,53 @@ check for the whole contents of FILE, otherwise check for the first
          (function (lambda ()
                      (unless (member "*scratch*" (my-buffer-name-list))
                        (my-make-scratch 1)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Vertico + Consult + Marginalia + Orderless + Embark
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package vertico
+  :init
+  (vertico-mode))
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package recentf
+  :ensure nil
+  :init
+  (recentf-mode 1)
+  :custom
+  (recentf-max-saved-items 200)
+  (recentf-auto-cleanup 'never))
+
+(use-package consult
+  :bind
+  (("M-o" . consult-line)
+   ("C-x b" . consult-buffer)
+   ("M-y" . consult-yank-pop)
+   ("C-C C-g" . consult-goto-line)
+   ("C-c g" . consult-imenu)
+   ("M-s o" . consult-outline)
+   ("M-s r" . consult-ripgrep)
+   ("C-x C-r" . consult-recent-file)))
+
+(use-package embark
+  :bind
+  (("C-." . embark-act)))
+
+(use-package embark-consult
+  :after (embark consult))
+
+(use-package corfu
+  :init
+  (global-corfu-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; tab-bar.el
