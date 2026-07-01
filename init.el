@@ -468,13 +468,11 @@ check for the whole contents of FILE, otherwise check for the first
             (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)
             (local-set-key (kbd "C-c i") 'go-goto-imports)
             (local-set-key (kbd "C-m") 'newline-and-indent)
-;;            (local-set-key (kbd "C-c C-j") 'go-direx-switch-to-buffer)
             (local-set-key (kbd "C-c d") 'godoc)
             (local-set-key (kbd "C-x f") 'go-test-current-file)
             (local-set-key (kbd "C-x t") 'go-test-current-test)
             (local-set-key (kbd "C-x p") 'go-test-current-project)
             (local-set-key (kbd "C-x x") 'go-run)
-            (local-set-key (kbd "C-c C-f") 'moccur-grep-find)
 
             (set (make-local-variable 'compile-command)
                  "go generate && go build -v && go vet")))
@@ -705,22 +703,6 @@ check for the whole contents of FILE, otherwise check for the first
 (global-set-key "\C-ct" 'insert-timestamp)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; color-moccur
-;; -> http://www.bookshelf.jp/cgi-bin/goto.cgi?file=meadow&node=flush-lines
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (require 'moccur-edit)
-(setq moccur-split-word t)
-(global-set-key "\C-c\C-f" 'moccur-grep-find)
-(global-set-key "\C-c\C-m" 'moccur)
-(global-set-key "\C-c\C-o" 'search-buffers)
-
-;; moccur-edit-finish-editと同時にファイル保存
-;; (defadvice moccur-edit-change-file
-;;     (after save-after-moccur-edit-buffer activate)
-;;  (save-buffer))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ag
 ;; -> http://kotatu.org/blog/2013/12/18/emacs-ag-wgrep-for-code-grep-search/
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -841,16 +823,8 @@ check for the whole contents of FILE, otherwise check for the first
 ;; javascript
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-
-(setq js2-mode-hook
-      '(lambda ()
-         (setq js2-basic-offset 2)
-         (setq tab-width 2)
- ;;        (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
-         (ac-js2-mode)
-         ))
+;; 組み込みの js-mode / js-json-mode を使う（インデント幅のみ設定）
+(setq js-indent-level 2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; egg
