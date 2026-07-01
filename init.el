@@ -633,6 +633,13 @@ check for the whole contents of FILE, otherwise check for the first
 (setq riffle-keep-window t)
 (setq riffle-window-initializer nil)
 
+;; *.howm を開いたら howm-mode（マイナーモード）を自動で有効にする
+(add-hook 'find-file-hook
+          (lambda ()
+            (when (and buffer-file-name
+                       (string-match-p "\\.howm\\'" buffer-file-name))
+              (howm-mode 1))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; fuzzy-format.el
 ;; インデントがタブかスペースか区別して良い感じに扱う
