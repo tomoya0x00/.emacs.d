@@ -1,2 +1,0 @@
-;;; Generated package description from /Users/tomoya0x00/.emacs.d/elpa/helm-github-stars-20190428.1047/helm-github-stars.el  -*- no-byte-compile: t -*-
-(define-package "helm-github-stars" "20190428.1047" "Helm interface for your github's stars" '((helm "1.6.8") (emacs "24.4")) :commit "c891690218b0d8b957ea6cb45b1b6cffd15a6950" :keywords '("helm" "github" "stars") :authors '(("Sliim" . "sliim@mailoo.org") ("xuchunyang" . "xuchunyang56@gmail.com")) :maintainer '("Sliim" . "sliim@mailoo.org") :url "https://github.com/Sliim/helm-github-stars")

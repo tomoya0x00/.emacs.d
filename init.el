@@ -267,17 +267,6 @@ check for the whole contents of FILE, otherwise check for the first
 (package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; guide-key
-;; ->https://github.com/kai2nenobu/guide-key
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c" "M-g"))
-(setq guide-key/highlight-command-regexp "rectangle")
-(setq guide-key/idle-delay 0.2)
-(guide-key-mode 1)  ; guide-key-mode を有効にする
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; http://namazu.org/~satoru/diary/?200203c&to=200203272#200203272
 ;; 編集中のファイルを開き直す
 ;; - yes/no の確認が不要;;   - revert-buffer は yes/no の確認がうるさい
@@ -467,14 +456,6 @@ check for the whole contents of FILE, otherwise check for the first
 ;; go-mode.el
 ;; -> http://unknownplace.org/archives/golang-editing-with-emacs.html
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'go-eldoc)
-(add-hook 'go-mode-hook 'go-eldoc-setup)
-(set-face-attribute 'eldoc-highlight-function-argument nil
-                    :underline t :foreground "green"
-                    :weight 'bold)
-
-;; (require 'go-direx)
 
 (add-hook 'go-mode-hook
           '(lambda()
@@ -722,28 +703,6 @@ check for the whole contents of FILE, otherwise check for the first
  (interactive (insert (format  "[%s] " (format-time-string "%H:%M")))))
 
 (global-set-key "\C-ct" 'insert-timestamp)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; shell-command.el
-;; M-! (shell-command) で補完が効くように
-;; -> http://www.namazu.org/~tsuchiya/elisp/#shell-command-with-completion
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'shell-command)
-(shell-command-completion-mode t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; popwin.el
-;; ヘルプバッファや補完バッファをポップアップ表示
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'popwin)
-(setq display-buffer-function 'popwin:display-buffer)
-
-(setq popwin:popup-window-position 'bottom)
-
-(push '("*anything*") popwin:special-display-config)
-(push '("*occur*") popwin:special-display-config)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; color-moccur
