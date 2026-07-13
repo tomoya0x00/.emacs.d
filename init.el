@@ -700,8 +700,10 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x g") 'magit-status)
-(setq magit-git-executable "C:/Program Files/Git/cmd/git.exe")
-(setenv "SSH_ASKPASS" "git-gui--askpass")
+
+(when (eq system-type 'windows-nt) ; Windows
+  (setq magit-git-executable "C:/Program Files/Git/cmd/git.exe")
+  (setenv "SSH_ASKPASS" "git-gui--askpass"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; c-mode用のいろいろな設定
