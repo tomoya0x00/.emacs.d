@@ -426,6 +426,13 @@ check for the whole contents of FILE, otherwise check for the first
 (require 'doom-modeline)
 (doom-modeline-mode 1)
 
+;; アナログ時計をSVGで描くのをやめる。
+;; emacs-mac 版は SVG をラスタライズするたびに WKWebView + WebProcessPool を
+;; 新規生成する（全ユーザーフォントを毎回登録）ため、display-time が毎分
+;; time セグメントを更新するたびに十数秒フリーズしていた。nil にすると
+;; nerd-icons のフォント字形の時計アイコンにフォールバックする（安価）。
+(setq doom-modeline-time-analogue-clock nil)
+
 (doom-modeline-def-segment tab-bar-name
     "The current tab name. Requires `tab-bar-mode` to be enabled."
     (if (< 1 (length (tab-bar-tabs)))
