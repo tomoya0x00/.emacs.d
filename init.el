@@ -497,7 +497,8 @@ check for the whole contents of FILE, otherwise check for the first
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; howmible
-(setq howm-directory "~/howm")
+;; ~/howm はシンボリックリンクで、macOS の grep -r は引数のリンクを辿らないため実体パスを渡す
+(setq howm-directory (file-truename "~/howm"))
 (setq howm-menu-lang 'ja)
 (require 'howm)
 
